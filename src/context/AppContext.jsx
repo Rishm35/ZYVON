@@ -16,6 +16,12 @@ export function AppProvider({ children }) {
 
   // Monitor Firebase Auth State
   useEffect(() => {
+    // Firebase may be unconfigured (no env vars). In that case, stay in guest
+    // mode instead of crashing on a null `auth` instance.
+    if (!auth) {
+      setAuthLoading(false);
+      return;
+    }
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
@@ -51,6 +57,10 @@ export function AppProvider({ children }) {
   }, []);
 
   const loginWithGoogle = async () => {
+    if (!auth) {
+      alert("Login is unavailable: authentication is not configured for this environment.");
+      return;
+    }
     try {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
@@ -61,6 +71,7 @@ export function AppProvider({ children }) {
   };
 
   const logout = async () => {
+    if (!auth) return;
     await signOut(auth);
   };
 
