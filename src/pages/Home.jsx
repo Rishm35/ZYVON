@@ -6,12 +6,14 @@ import api from '../api';
 import WireDivider from '../components/WireDivider';
 import { useAppContext } from '../context/AppContext';
 import LegalModal from '../components/LegalModal';
+import DropModal from '../components/DropModal';
 
 const HERO_TEXTS = ['FASHION', 'CLEAN FITS', 'PURE STYLE'];
 
 export default function Home() {
   const { setGlowColor } = useAppContext();
   const [legalPage, setLegalPage] = useState(null); // 'terms' | 'privacy' | 'refund' | 'contact'
+  const [activeDrop, setActiveDrop] = useState(null); // category object shown in DropModal
   const [heroIndex, setHeroIndex] = useState(0);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -153,7 +155,12 @@ export default function Home() {
                   whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
                   data-glow={getCategoryGlow(idx)}
                 >
-                  <Link to={`/category/${cat.slug || cat.categoryId}`} className="category-card-link">
+                  <button
+                    type="button"
+                    className="category-card-link"
+                    onClick={() => setActiveDrop(cat)}
+                    aria-label={`View ${cat.name} products`}
+                  >
                     {cat.thumbnail ? (
                       <img src={cat.thumbnail} alt={cat.name} className="category-card-img" />
                     ) : (
@@ -175,7 +182,7 @@ export default function Home() {
                         <span>→</span>
                       </div>
                     </div>
-                  </Link>
+                  </button>
                 </motion.div>
               ))}
             </motion.div>
@@ -272,6 +279,11 @@ export default function Home() {
 
         {/* Legal Modal */}
         {legalPage && <LegalModal pageKey={legalPage} onClose={() => setLegalPage(null)} />}
+
+        {/* Drop Modal — product list for the selected category */}
+        <AnimatePresence>
+          {activeDrop && <DropModal category={activeDrop} onClose={() => setActiveDrop(null)} />}
+        </AnimatePresence>
 
       </main>
     </motion.div>

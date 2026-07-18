@@ -3746,3 +3746,104 @@
 @media (max-width: 768px) {
   .checkout-grid { grid-template-columns: 1fr; gap: 20px; }
 }
+
+/* --- Category card as a button (Drops open in a modal) --- */
+button.category-card-link {
+  border: none;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* --- Drop Modal --- */
+.drop-modal-content {
+  max-width: 1100px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+}
+.drop-modal-header {
+  padding: 32px 40px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.drop-modal-header .header-meta {
+  margin-bottom: 10px;
+}
+.drop-modal-body {
+  padding: 28px 40px;
+  overflow-y: auto;
+  flex: 1;
+}
+.drop-modal-loading,
+.drop-modal-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 0;
+  color: #888;
+}
+.drop-modal-subcats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+.drop-subcat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  color: #ddd;
+  text-decoration: none;
+  font-size: 13px;
+  letter-spacing: 1px;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.drop-subcat-chip:hover {
+  border-color: var(--wire-glow, #dcd0ff);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+}
+.drop-subcat-count {
+  font-size: 11px;
+  color: #888;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  padding: 1px 8px;
+}
+.drop-modal-content .products-grid {
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.75rem;
+  margin-bottom: 0;
+}
+.drop-modal-footer {
+  padding: 18px 40px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: right;
+}
+.drop-view-all-link {
+  color: var(--wire-glow, #dcd0ff);
+  text-decoration: none;
+  font-family: var(--font-wireframe);
+  font-size: 13px;
+  letter-spacing: 2px;
+  transition: opacity 0.2s;
+}
+.drop-view-all-link:hover {
+  opacity: 0.7;
+}
+@media (max-width: 768px) {
+  .drop-modal-header { padding: 24px 20px 16px; }
+  .drop-modal-body { padding: 20px; }
+  .drop-modal-footer { padding: 16px 20px; }
+  .drop-modal-content .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
