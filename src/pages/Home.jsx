@@ -10,6 +10,27 @@ import DropModal from '../components/DropModal';
 
 const HERO_TEXTS = ['FASHION', 'CLEAN FITS', 'PURE STYLE'];
 
+// Shown when the catalog has no live categories yet, so THE DROPS still
+// showcases the collection instead of an empty state.
+const FALLBACK_CATEGORIES = [
+  {
+    categoryId: 'women',
+    slug: 'women',
+    name: 'Women',
+    thumbnail: '/drops/women.png',
+    children: [],
+    products: new Array(15).fill(0),
+  },
+  {
+    categoryId: 'man',
+    slug: 'man',
+    name: 'Man',
+    thumbnail: '/drops/men.png',
+    children: [],
+    products: new Array(7).fill(0),
+  },
+];
+
 export default function Home() {
   const { setGlowColor } = useAppContext();
   const [legalPage, setLegalPage] = useState(null); // 'terms' | 'privacy' | 'refund' | 'contact'
@@ -132,12 +153,6 @@ export default function Home() {
             <div style={{ textAlign: 'center', padding: '80px 0', color: 'var(--wire-glow)', fontFamily: 'var(--font-wireframe)', letterSpacing: '4px' }}>
               LOADING CATALOG...
             </div>
-          ) : categories.length === 0 ? (
-            <div className="no-categories-placeholder">
-              <div className="no-cat-icon">🏗</div>
-              <p className="no-cat-title">DROPS INCOMING</p>
-              <p className="no-cat-sub">New categories are being stocked. Check back soon.</p>
-            </div>
           ) : (
             <motion.div
               className="category-hero-grid"
@@ -145,7 +160,7 @@ export default function Home() {
               animate={{ opacity: 1 }}
               transition={{ staggerChildren: 0.08, delayChildren: 0.1 }}
             >
-              {categories.map((cat, idx) => (
+              {(categories.length > 0 ? categories : FALLBACK_CATEGORIES).map((cat, idx) => (
                 <motion.div
                   key={cat.categoryId}
                   className="category-card"
