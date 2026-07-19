@@ -2446,6 +2446,107 @@
   transform: translateY(0);
 }
 
+/* ============================================================
+   FLASH SALE GRID
+   ============================================================ */
+
+.sale-section {
+  padding: 2rem 0 1rem;
+}
+
+.sale-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin: 2rem 0 3rem 0;
+}
+
+@media (min-width: 600px) {
+  .sale-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 900px) {
+  .sale-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+.sale-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  background: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 2px solid var(--sale-accent);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.sale-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 30px color-mix(in srgb, var(--sale-accent) 18%, transparent);
+  border-color: var(--sale-accent);
+}
+
+.sale-card-img-wrap {
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  background: #050505;
+}
+
+.sale-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0.9;
+  transition: transform 0.5s ease, opacity 0.4s ease;
+}
+
+.sale-card:hover .sale-card-img {
+  transform: scale(1.06);
+  opacity: 1;
+}
+
+.sale-card-body {
+  padding: 0.75rem 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+}
+
+.sale-card-name {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sale-card-discount {
+  font-family: var(--font-primary);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+.sale-card-cta {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--sale-accent);
+  margin-top: 2px;
+}
+
 /* No categories placeholder */
 .no-categories-placeholder {
   text-align: center;

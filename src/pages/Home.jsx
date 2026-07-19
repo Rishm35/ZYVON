@@ -6,7 +6,7 @@ import api from '../api';
 import WireDivider from '../components/WireDivider';
 import { useAppContext } from '../context/AppContext';
 import LegalModal from '../components/LegalModal';
-import { DEMO_HOME_CATEGORIES as DEMO_CATEGORIES } from '../demoData';
+import { DEMO_HOME_CATEGORIES as DEMO_CATEGORIES, DEMO_SALE_ITEMS } from '../demoData';
 
 const HERO_TEXTS = ['FASHION', 'CLEAN FITS', 'PURE STYLE'];
 
@@ -183,6 +183,45 @@ export default function Home() {
               ))}
             </motion.div>
           )}
+        </section>
+
+        <WireDivider type="default" color="#ffd3b6" glowColor="rgba(255,211,182,0.3)" />
+
+        {/* Flash Sale Section */}
+        <section id="sale" className="sale-section" data-glow="rgba(255,211,182,0.12)">
+          <div className="section-header" style={{ padding: 0 }}>
+            <div className="header-meta">
+              <span className="marker-circle"></span>
+              <span>LIMITED // FLASH SALE</span>
+            </div>
+            <h2 className="header-graffiti" style={{ fontFamily: 'var(--font-wireframe)' }}>
+              THE SALE
+            </h2>
+          </div>
+
+          <div className="sale-grid">
+            {DEMO_SALE_ITEMS.map((item, idx) => {
+              const accents = ['#dcd0ff', '#ffd3b6', '#c5ecd2'];
+              const accent = accents[idx % accents.length];
+              return (
+                <Link
+                  key={item.id}
+                  to={`/category/${item.category}`}
+                  className="sale-card"
+                  style={{ '--sale-accent': accent }}
+                >
+                  <div className="sale-card-img-wrap">
+                    <img src={item.image} alt={item.name} className="sale-card-img" />
+                  </div>
+                  <div className="sale-card-body">
+                    <span className="sale-card-name">{item.name}</span>
+                    <span className="sale-card-discount">{item.discount}</span>
+                    <span className="sale-card-cta">Shop Now →</span>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </section>
 
         <WireDivider type="right-angle" color="#c5ecd2" glowColor="rgba(197,236,210,0.3)" />

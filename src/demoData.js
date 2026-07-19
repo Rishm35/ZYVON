@@ -172,6 +172,23 @@ export function getDemoProduct(productId) {
   return ALL_PRODUCTS.find((p) => p.product_id === productId) || null;
 }
 
+// Home page "FLASH SALE" grid — built from the ZYVON drops.
+// Each card links to the drop's category page.
+export const DEMO_SALE_ITEMS = [
+  { id: 'women-main-character', name: 'Main Character Energy', image: '/images/prod-maincharacter.png', discount: 'UP TO 70% OFF', category: 'women' },
+  { id: 'man-discipline', name: 'ZYVON Discipline Tee', image: '/images/prod-discipline.png', discount: '40-80% OFF', category: 'man' },
+  { id: 'women-chaos', name: 'Chaos Club Tee', image: '/images/prod-chaos.png', discount: '30-70% OFF', category: 'women' },
+  { id: 'man-rare-edition', name: 'Rare Edition Drop', image: '/images/prod-rare.png', discount: 'UP TO 60% OFF', category: 'man' },
+  { id: 'women-inner-peace', name: 'Inner Peace Tee', image: '/images/prod-innerpeace.png', discount: '30-60% OFF', category: 'women' },
+  { id: 'man-brown-motivation', name: 'Brown Motivation Tee', image: '/images/prod-brownmotivation.png', discount: 'UP TO 70% OFF', category: 'man' },
+  { id: 'women-bloom', name: 'Bloom Oversized Tee', image: '/images/prod-bloom.png', discount: '40-80% OFF', category: 'women' },
+  { id: 'man-mountain', name: 'Mountain Oversized Tee', image: '/images/prod-mountain.png', discount: '30-70% OFF', category: 'man' },
+  { id: 'women-mind-over', name: 'Mind Over Overthinking', image: '/images/prod-mindover.png', discount: 'UP TO 60% OFF', category: 'women' },
+  { id: 'man-wooden-brown', name: 'Wooden Brown Growth Tee', image: '/images/prod-woodenbrown.png', discount: '30-80% OFF', category: 'man' },
+  { id: 'man-progress', name: 'ZYVON Progress Tee', image: '/images/prod-progress.png', discount: 'UP TO 50% OFF', category: 'man' },
+  { id: 'man-green-street', name: 'Green Street Tee', image: '/images/prod-greenstreet.png', discount: '40-70% OFF', category: 'man' },
+];
+
 // Home page "THE DROPS" categories.
 export const DEMO_HOME_CATEGORIES = [
   {
