@@ -9,6 +9,26 @@ import LegalModal from '../components/LegalModal';
 
 const HERO_TEXTS = ['FASHION', 'CLEAN FITS', 'PURE STYLE'];
 
+// Fallback drops shown when the backend catalog is unavailable (e.g. preview/demo).
+const DEMO_CATEGORIES = [
+  {
+    categoryId: 'women',
+    slug: 'women',
+    name: 'WOMEN',
+    thumbnail: '/images/cat-women.png',
+    children: [],
+    products: Array.from({ length: 5 }),
+  },
+  {
+    categoryId: 'man',
+    slug: 'man',
+    name: 'MAN',
+    thumbnail: '/images/cat-man.png',
+    children: [],
+    products: Array.from({ length: 7 }),
+  },
+];
+
 export default function Home() {
   const { setGlowColor } = useAppContext();
   const [legalPage, setLegalPage] = useState(null); // 'terms' | 'privacy' | 'refund' | 'contact'
@@ -30,9 +50,11 @@ export default function Home() {
     const fetch = async () => {
       try {
         const res = await api.get('/categories');
-        setCategories(res.data);
+        setCategories(res.data && res.data.length > 0 ? res.data : DEMO_CATEGORIES);
       } catch (err) {
         console.error('Failed to fetch categories:', err);
+        // Fall back to demo drops so the storefront still renders.
+        setCategories(DEMO_CATEGORIES);
       } finally {
         setLoading(false);
       }

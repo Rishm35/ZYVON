@@ -16,6 +16,11 @@ export function AppProvider({ children }) {
 
   // Monitor Firebase Auth State
   useEffect(() => {
+    // Auth may be unavailable in preview/demo environments (no Firebase config).
+    if (!auth) {
+      setAuthLoading(false);
+      return;
+    }
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
@@ -51,6 +56,10 @@ export function AppProvider({ children }) {
   }, []);
 
   const loginWithGoogle = async () => {
+    if (!auth) {
+      alert("Login is not available in this demo environment.");
+      return;
+    }
     try {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
@@ -61,6 +70,7 @@ export function AppProvider({ children }) {
   };
 
   const logout = async () => {
+    if (!auth) return;
     await signOut(auth);
   };
 

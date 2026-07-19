@@ -12,9 +12,22 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+// Initialize Firebase only when a valid config is present.
+// In preview/demo environments the env vars may be missing — guard against
+// `auth/invalid-api-key` so the whole app doesn't crash to a blank screen.
+export const isFirebaseConfigured = Boolean(firebaseConfig.apiKey);
+
+let auth = null;
+if (isFirebaseConfigured) {
+  try {
+    const app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+  } catch (err) {
+    console.error('[v0] Firebase init failed:', err.message);
+    auth = null;
+  }
+}
+export { auth };
 
 // Axios instance
 const api = axios.create({
