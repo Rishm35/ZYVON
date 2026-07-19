@@ -6,12 +6,35 @@ import api from '../api';
 import WireDivider from '../components/WireDivider';
 import { useAppContext } from '../context/AppContext';
 import LegalModal from '../components/LegalModal';
+import DropModal from '../components/DropModal';
 
 const HERO_TEXTS = ['FASHION', 'CLEAN FITS', 'PURE STYLE'];
+
+// Shown when the catalog has no live categories yet, so THE DROPS still
+// showcases the collection instead of an empty state.
+const FALLBACK_CATEGORIES = [
+  {
+    categoryId: 'women',
+    slug: 'women',
+    name: 'Women',
+    thumbnail: '/drops/women.png',
+    children: [],
+    products: new Array(15).fill(0),
+  },
+  {
+    categoryId: 'man',
+    slug: 'man',
+    name: 'Man',
+    thumbnail: '/drops/men.png',
+    children: [],
+    products: new Array(7).fill(0),
+  },
+];
 
 export default function Home() {
   const { setGlowColor } = useAppContext();
   const [legalPage, setLegalPage] = useState(null); // 'terms' | 'privacy' | 'refund' | 'contact'
+  const [activeDrop, setActiveDrop] = useState(null); // category object shown in DropModal
   const [heroIndex, setHeroIndex] = useState(0);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -130,12 +153,6 @@ export default function Home() {
             <div style={{ textAlign: 'center', padding: '80px 0', color: 'var(--wire-glow)', fontFamily: 'var(--font-wireframe)', letterSpacing: '4px' }}>
               LOADING CATALOG...
             </div>
-          ) : categories.length === 0 ? (
-            <div className="no-categories-placeholder">
-              <div className="no-cat-icon">🏗</div>
-              <p className="no-cat-title">DROPS INCOMING</p>
-              <p className="no-cat-sub">New categories are being stocked. Check back soon.</p>
-            </div>
           ) : (
             <motion.div
               className="category-hero-grid"
@@ -143,7 +160,7 @@ export default function Home() {
               animate={{ opacity: 1 }}
               transition={{ staggerChildren: 0.08, delayChildren: 0.1 }}
             >
-              {categories.map((cat, idx) => (
+              {(categories.length > 0 ? categories : FALLBACK_CATEGORIES).map((cat, idx) => (
                 <motion.div
                   key={cat.categoryId}
                   className="category-card"
@@ -153,7 +170,12 @@ export default function Home() {
                   whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
                   data-glow={getCategoryGlow(idx)}
                 >
-                  <Link to={`/category/${cat.slug || cat.categoryId}`} className="category-card-link">
+                  <button
+                    type="button"
+                    className="category-card-link"
+                    onClick={() => setActiveDrop(cat)}
+                    aria-label={`View ${cat.name} products`}
+                  >
                     {cat.thumbnail ? (
                       <img src={cat.thumbnail} alt={cat.name} className="category-card-img" />
                     ) : (
@@ -175,7 +197,7 @@ export default function Home() {
                         <span>→</span>
                       </div>
                     </div>
-                  </Link>
+                  </button>
                 </motion.div>
               ))}
             </motion.div>
@@ -272,6 +294,11 @@ export default function Home() {
 
         {/* Legal Modal */}
         {legalPage && <LegalModal pageKey={legalPage} onClose={() => setLegalPage(null)} />}
+
+        {/* Drop Modal — product list for the selected category */}
+        <AnimatePresence>
+          {activeDrop && <DropModal category={activeDrop} onClose={() => setActiveDrop(null)} />}
+        </AnimatePresence>
 
       </main>
     </motion.div>

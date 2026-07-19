@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import api from '../api';
 import { useAppContext } from '../context/AppContext';
 import ProductReviews from '../components/ProductReviews';
+import DropModal from '../components/DropModal';
 
 export default function CategoryPage() {
   const { categoryId } = useParams();
@@ -17,6 +18,7 @@ export default function CategoryPage() {
   const [imgIdx, setImgIdx] = useState({});
   const [selectedSizes, setSelectedSizes] = useState({});
   const [expandedProduct, setExpandedProduct] = useState(null);
+  const [activeDrop, setActiveDrop] = useState(null);
 
   const handleSizeSelect = (productId, size) => {
     setSelectedSizes(prev => ({ ...prev, [productId]: size }));
@@ -158,7 +160,12 @@ export default function CategoryPage() {
                   transition={{ delay: idx * 0.07 }}
                   whileHover={{ scale: 1.02 }}
                 >
-                  <Link to={`/category/${sub.slug || sub.categoryId}`} className="category-card-link">
+                  <button
+                    type="button"
+                    className="category-card-link"
+                    onClick={() => setActiveDrop(sub)}
+                    aria-label={`View ${sub.name} products`}
+                  >
                     {sub.thumbnail && (
                       <img src={sub.thumbnail} alt={sub.name} className="category-card-img" />
                     )}
@@ -171,7 +178,7 @@ export default function CategoryPage() {
                         <span className="category-card-meta">{sub.products.length} items</span>
                       )}
                     </div>
-                  </Link>
+                  </button>
                 </motion.div>
               ))}
             </div>
@@ -406,6 +413,11 @@ export default function CategoryPage() {
             </motion.div>
           </div>
         )}
+      </AnimatePresence>
+
+      {/* Drop Modal — product list for a selected sub-category */}
+      <AnimatePresence>
+        {activeDrop && <DropModal category={activeDrop} onClose={() => setActiveDrop(null)} />}
       </AnimatePresence>
 
     </motion.div>
