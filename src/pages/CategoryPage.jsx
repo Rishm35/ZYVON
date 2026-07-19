@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import api from '../api';
 import { useAppContext } from '../context/AppContext';
 import ProductReviews from '../components/ProductReviews';
+import { getDemoCategory, getDemoProductsForCategory } from '../demoData';
 
 export default function CategoryPage() {
   const { categoryId } = useParams();
@@ -28,10 +29,28 @@ export default function CategoryPage() {
     setSubCategories([]);
     setProducts([]);
 
+    const loadDemo = () => {
+      const demoCat = getDemoCategory(categoryId);
+      if (!demoCat) return false;
+      setCategory(demoCat);
+      setBreadcrumb([{ id: categoryId, name: demoCat.name, slug: demoCat.slug || categoryId }]);
+      setSubCategories([]);
+      setProducts(getDemoProductsForCategory(categoryId));
+      setLoading(false);
+      return true;
+    };
+
     const fetchData = async () => {
       try {
         const res = await api.get(`/categories/${categoryId}`);
         const cat = res.data;
+
+        // If the backend has no products for this category but we have a demo
+        // catalog for it, prefer the demo drops so the page isn't empty.
+        if ((!cat.products || cat.products.length === 0) && getDemoCategory(categoryId)) {
+          if (loadDemo()) return;
+        }
+
         setCategory(cat);
 
         // Build breadcrumb by walking parentId chain
@@ -69,6 +88,8 @@ export default function CategoryPage() {
         }
       } catch (err) {
         console.error('Failed to load category:', err);
+        // Backend unreachable — fall back to the demo catalog if we have one.
+        if (loadDemo()) return;
       } finally {
         setLoading(false);
       }

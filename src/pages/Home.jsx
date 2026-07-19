@@ -6,28 +6,9 @@ import api from '../api';
 import WireDivider from '../components/WireDivider';
 import { useAppContext } from '../context/AppContext';
 import LegalModal from '../components/LegalModal';
+import { DEMO_HOME_CATEGORIES as DEMO_CATEGORIES } from '../demoData';
 
 const HERO_TEXTS = ['FASHION', 'CLEAN FITS', 'PURE STYLE'];
-
-// Fallback drops shown when the backend catalog is unavailable (e.g. preview/demo).
-const DEMO_CATEGORIES = [
-  {
-    categoryId: 'women',
-    slug: 'women',
-    name: 'WOMEN',
-    thumbnail: '/images/cat-women.png',
-    children: [],
-    products: Array.from({ length: 5 }),
-  },
-  {
-    categoryId: 'man',
-    slug: 'man',
-    name: 'MAN',
-    thumbnail: '/images/cat-man.png',
-    children: [],
-    products: Array.from({ length: 7 }),
-  },
-];
 
 export default function Home() {
   const { setGlowColor } = useAppContext();
